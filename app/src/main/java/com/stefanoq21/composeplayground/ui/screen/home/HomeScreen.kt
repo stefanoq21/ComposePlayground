@@ -16,7 +16,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -46,8 +48,8 @@ fun HomeInitScreen(
 fun HomeScreen(
     onNavigationEvent: (NavigationEvent) -> Unit,
 ) {
-    val screens = remember {
-        mutableStateListOf(Screen.Screen1, Screen.Screen2)
+    val screens by remember {
+        mutableStateOf(Screen.getSubScreens())
     }
 
     Column(modifier = Modifier.fillMaxSize()) {

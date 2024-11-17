@@ -12,5 +12,7 @@ sealed interface Screen {
 
     @Serializable
     data object Screen2 : Screen
-
+    companion object {
+        fun getSubScreens(): List<Screen> = listOf(Screen1, Screen2)
+    }
 }
