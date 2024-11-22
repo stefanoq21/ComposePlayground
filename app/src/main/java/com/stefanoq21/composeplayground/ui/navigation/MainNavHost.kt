@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.stefanoq21.composeplayground.ui.screen.graphicsLayer.GraphicsLayerScreen
 import com.stefanoq21.composeplayground.ui.screen.home.HomeInitScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -31,6 +32,10 @@ fun MainNavHost(
 
         composable<Screen.Screen2> {
             Text("Screen2")
+        }
+
+        composable<Screen.GraphicsLayerScreen> {
+         GraphicsLayerScreen()
         }
 
 
