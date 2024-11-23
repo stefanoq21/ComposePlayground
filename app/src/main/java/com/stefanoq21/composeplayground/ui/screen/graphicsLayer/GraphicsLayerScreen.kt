@@ -1,12 +1,12 @@
 package com.stefanoq21.composeplayground.ui.screen.graphicsLayer
 
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -17,35 +17,35 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import com.stefanoq21.composeplayground.R
 import com.stefanoq21.composeplayground.ui.theme.ComposePlaygroundTheme
 import kotlinx.coroutines.launch
-/** https://developer.android.com/develop/ui/compose/graphics/draw/modifiers    */
+import java.io.File
+import java.io.FileOutputStream
+
+/** https://developer.android.com/develop/ui/compose/graphics/draw/modifiers#graphics-modifiers    */
 
 @Composable
 fun GraphicsLayerScreen(
@@ -53,18 +53,14 @@ fun GraphicsLayerScreen(
 ) {
     val graphicsLayer = rememberGraphicsLayer()
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
-            .fillMaxWidth().verticalScroll(rememberScrollState())
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        Text(
-            modifier = Modifier.padding(vertical = 16.dp),
-            text = "Graphics Layer",
-            style = MaterialTheme.typography.titleLarge
-        )
-
         Box(modifier = Modifier
             .drawWithContent {
                 graphicsLayer.record {
@@ -74,8 +70,8 @@ fun GraphicsLayerScreen(
             }
             .clickable {
                 coroutineScope.launch {
-                    val bitmap = graphicsLayer.toImageBitmap()
-
+                    val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+                    shareBitmap(bitmap, context)
                 }
             }
 
@@ -162,39 +158,7 @@ fun GraphicsLayerScreen(
             )
         }
 
-        var pointerOffset by remember {
-            mutableStateOf(Offset(0f, 0f))
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .pointerInput("dragging") {
-                    detectDragGestures { change, dragAmount ->
-                        pointerOffset += dragAmount
-                    }
-                }
-                .onSizeChanged {
-                    pointerOffset = Offset(it.width / 2f, it.height / 2f)
-                }
-                .drawWithContent {
-                    drawContent()
-                    // draws a fully black area with a small keyhole at pointerOffset that’ll show part of the UI.
-                    drawRect(
-                        Brush.radialGradient(
-                            listOf(Color.Transparent, Color.Black),
-                            center = pointerOffset,
-                            radius = 100.dp.toPx(),
-                        )
-                    )
-                }
-        ) {
-            Image(
-                modifier = Modifier.fillMaxWidth(),
-                painter = painterResource(id = images[0]),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
-            )
-        }
+
     }
 
 }
@@ -230,6 +194,33 @@ private fun Modifier.colorFilter(colorFilter: ColorFilter): Modifier {
     }
 }
 
+fun shareBitmap(bitmap: Bitmap, context: Context) {
+    val imageFile = File(context.cacheDir, "shared_image.jpg")
+    val fos = FileOutputStream(imageFile)
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+    fos.close()
+
+    val uri = FileProvider.getUriForFile(
+        context,
+        "${context.applicationContext.packageName}.fileprovider",
+        imageFile
+    )
+
+    val shareIntent = Intent(Intent.ACTION_SEND)
+    shareIntent.type = "image/jpeg"
+    shareIntent.putExtra(
+        Intent.EXTRA_STREAM,
+        uri
+    )
+    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+    context.startActivity(
+        Intent.createChooser(
+            shareIntent,
+            "Share Image"
+        )
+    )
+}
 
 @Preview
 @Composable

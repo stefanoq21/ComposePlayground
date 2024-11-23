@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.stefanoq21.composeplayground.ui.screen.graphicsLayer.GraphicsLayerScreen
+import com.stefanoq21.composeplayground.ui.screen.hiddenAreaScreen.HiddenAreaScreen
 import com.stefanoq21.composeplayground.ui.screen.home.HomeInitScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -35,7 +36,10 @@ fun MainNavHost(
         }
 
         composable<Screen.GraphicsLayerScreen> {
-         GraphicsLayerScreen()
+            GraphicsLayerScreen()
+        }
+        composable<Screen.HiddenAreaScreen> {
+            HiddenAreaScreen()
         }
 
 
