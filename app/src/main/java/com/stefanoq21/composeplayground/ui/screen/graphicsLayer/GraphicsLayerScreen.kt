@@ -57,8 +57,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
-/** https://developer.android.com/develop/ui/compose/graphics/draw/modifiers#graphics-modifiers    */
-
 
 @Composable
 fun GraphicsLayerScreen(
