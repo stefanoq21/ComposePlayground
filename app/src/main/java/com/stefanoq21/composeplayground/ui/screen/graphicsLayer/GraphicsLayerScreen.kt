@@ -395,13 +395,8 @@ fun shareBitmap(bitmap: Bitmap, context: Context) {
 fun GraphicsLayerScreenPreview() {
     ComposePlaygroundTheme {
         Surface {
-            GraphicsLayerScreen(
-
-            )
+            GraphicsLayerScreen()
         }
-
-
     }
-
 }
 
