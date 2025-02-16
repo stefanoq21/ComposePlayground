@@ -1,6 +1,7 @@
 package com.stefanoq21.composeplayground.ui.screen.home
 
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.stefanoq21.composeplayground.ui.navigation.NavigationEvent
@@ -32,7 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeInitScreen(
-    navigationViewModel: NavigationViewModel = koinViewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity),
+    navigationViewModel: NavigationViewModel = koinViewModel(viewModelStoreOwner = LocalActivity.current as ComponentActivity),
 ) {
 
     HomeScreen(

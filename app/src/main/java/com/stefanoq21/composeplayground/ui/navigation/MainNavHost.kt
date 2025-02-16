@@ -1,21 +1,22 @@
 package com.stefanoq21.composeplayground.ui.navigation
 
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.stefanoq21.composeplayground.ui.screen.graphicsLayer.GraphicsLayerScreen
 import com.stefanoq21.composeplayground.ui.screen.hiddenAreaScreen.HiddenAreaScreen
 import com.stefanoq21.composeplayground.ui.screen.home.HomeInitScreen
+import com.stefanoq21.composeplayground.ui.screen.shaderBrush.ShaderBrushScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainNavHost(
     modifier: Modifier = Modifier,
-    navigationViewModel: NavigationViewModel = koinViewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity),
+    navigationViewModel: NavigationViewModel = koinViewModel(viewModelStoreOwner = LocalActivity.current as ComponentActivity),
 ) {
 
     NavHost(
@@ -40,6 +41,9 @@ fun MainNavHost(
         }
         composable<Screen.HiddenAreaScreen> {
             HiddenAreaScreen()
+        }
+        composable<Screen.ShaderBrushScreen> {
+            ShaderBrushScreen()
         }
 
 

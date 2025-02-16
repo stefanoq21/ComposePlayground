@@ -19,8 +19,12 @@ sealed interface Screen {
     @Serializable
     data object HiddenAreaScreen : Screen
 
+    @Serializable
+    data object ShaderBrushScreen : Screen
+
+
 
     companion object {
-        fun getSubScreens(): List<Screen> = listOf(Screen1, Screen2, GraphicsLayerScreen, HiddenAreaScreen)
+        fun getSubScreens(): List<Screen> = listOf(Screen1, Screen2, GraphicsLayerScreen, HiddenAreaScreen, ShaderBrushScreen)
     }
 }
