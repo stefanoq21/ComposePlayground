@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.stefanoq21.composeplayground.ui.screen.expressiveDesign.ExpressiveDesignScreen
 import com.stefanoq21.composeplayground.ui.screen.graphicsLayer.GraphicsLayerScreen
 import com.stefanoq21.composeplayground.ui.screen.hiddenAreaScreen.HiddenAreaScreen
 import com.stefanoq21.composeplayground.ui.screen.home.HomeInitScreen
@@ -44,6 +45,9 @@ fun MainNavHost(
         }
         composable<Screen.ShaderBrushScreen> {
             ShaderBrushScreen()
+        }
+        composable<Screen.ExpressiveDesignScreen> {
+            ExpressiveDesignScreen()
         }
 
 
