@@ -25,6 +25,9 @@ sealed interface Screen {
     @Serializable
     data object ExpressiveDesignScreen : Screen
 
+    @Serializable
+    data object ShadowScreen : Screen
+
 
     companion object {
         fun getSubScreens(): List<Screen> =
@@ -34,7 +37,8 @@ sealed interface Screen {
                 GraphicsLayerScreen,
                 HiddenAreaScreen,
                 ShaderBrushScreen,
-                ExpressiveDesignScreen
+                ExpressiveDesignScreen,
+                ShadowScreen
             )
     }
 }

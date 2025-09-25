@@ -12,6 +12,7 @@ import com.stefanoq21.composeplayground.ui.screen.graphicsLayer.GraphicsLayerScr
 import com.stefanoq21.composeplayground.ui.screen.hiddenAreaScreen.HiddenAreaScreen
 import com.stefanoq21.composeplayground.ui.screen.home.HomeInitScreen
 import com.stefanoq21.composeplayground.ui.screen.shaderBrush.ShaderBrushScreen
+import com.stefanoq21.composeplayground.ui.screen.shadow.ShadowScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -48,6 +49,9 @@ fun MainNavHost(
         }
         composable<Screen.ExpressiveDesignScreen> {
             ExpressiveDesignScreen()
+        }
+        composable<Screen.ShadowScreen> {
+            ShadowScreen()
         }
 
 
