@@ -37,8 +37,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.draw.innerShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
@@ -58,6 +60,18 @@ fun ShadowScreen(
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
+
+        Box(
+            Modifier
+                .size(100.dp)
+                .shadow(
+                    elevation = 10.dp,
+                    shape = RectangleShape
+                )
+                .background(Color.White)
+        )
+
+
         Box(
             modifier = Modifier
                 .padding(16.dp)
@@ -86,9 +100,11 @@ fun ShadowScreen(
                 .padding(16.dp)
                 .dropShadow(
                     shape = MaterialShapes.Cookie12Sided.toShape(), shadow = Shadow(
-                        radius = 6.dp,
-                        spread = 2.dp,
-                        color = Color.Black.copy(alpha = 0.3f),
+                        radius = 10.dp,
+                        spread = 6.dp,
+                        brush = Brush.sweepGradient(
+                            listOf(Color.Green, Color.Blue, Color.Yellow, Color.Green)
+                        ),
                         offset = DpOffset(2.dp, 2.dp)
                     )
                 )
@@ -158,13 +174,12 @@ fun ShadowScreen(
             )
         }
 
-
+        Spacer(modifier = Modifier.height(50.dp))
         AnimatedColoredShadows()
 
         Spacer(modifier = Modifier.height(50.dp))
 
 
-        val colors = listOf(Color.Green, Color.Blue, Color.Yellow, Color.Green)
         Box(
             modifier = Modifier
                 .width(240.dp)
@@ -172,7 +187,7 @@ fun ShadowScreen(
                 .dropShadow(
                     shape = RoundedCornerShape(70.dp), shadow = Shadow(
                         radius = 10.dp, spread = 12.dp, brush = Brush.sweepGradient(
-                            colors
+                            listOf(Color.Green, Color.Blue, Color.Yellow, Color.Green)
                         ), offset = DpOffset(x = 0.dp, y = 0.dp), alpha = 0.5f
                     )
                 )
@@ -205,7 +220,7 @@ fun ShadowScreen(
             NeoBrutalShadows()
         }
 
- Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Box(
             Modifier
@@ -241,21 +256,24 @@ fun AnimatedColoredShadows() {
             label = "shadow_alpha", transitionSpec = { buttonPressAnimation() }) { pressed ->
             if (pressed) 0f else 1f
         }
-        // ...
 
-        val blueDropShadow by transition.animateColor(
+        //to animate the color
+        val colorDropShadow by transition.animateColor(
             label = "shadow_color", transitionSpec = { buttonPressAnimation() }) { pressed ->
             if (pressed) Color.Transparent else Color.Green.copy(alpha = (0.5f))
         }
+        val innerShadowAlpha by transition.animateFloat(
+            label = "inner_shadow_alpha", transitionSpec = { buttonPressAnimation() }) { pressed ->
+            if (!pressed) 0f else 1f
+        }
 
-        // ...
 
         Box(
             Modifier
                 .clickable(
                     interactionSource, indication = null
                 ) {
-                    // ** ...... **//
+
                 }
                 .width(300.dp)
                 .height(200.dp)
@@ -264,17 +282,8 @@ fun AnimatedColoredShadows() {
                     shape = RoundedCornerShape(70.dp), shadow = Shadow(
                         radius = 10.dp,
                         spread = 0.dp,
-                        color = blueDropShadow,
-                        offset = DpOffset(x = 0.dp, -(2).dp),
-                        alpha = shadowAlpha
-                    )
-                )
-                .dropShadow(
-                    shape = RoundedCornerShape(70.dp), shadow = Shadow(
-                        radius = 10.dp,
-                        spread = 0.dp,
                         color = Color.Green.copy(alpha = (0.5f)),
-                        offset = DpOffset(x = 2.dp, 6.dp),
+                        offset = DpOffset(x = 0.dp, 0.dp),
                         alpha = shadowAlpha
                     )
                 )
@@ -287,18 +296,10 @@ fun AnimatedColoredShadows() {
                         radius = 8.dp,
                         spread = 4.dp,
                         color = Color.Green.copy(alpha = (0.5f)),
-                        offset = DpOffset(x = 4.dp, 0.dp)
+                        alpha = innerShadowAlpha,
+                        offset = DpOffset(x = 0.dp, 0.dp)
                     )
                 )
-                .innerShadow(
-                    shape = RoundedCornerShape(70.dp), shadow = Shadow(
-                        radius = 20.dp,
-                        spread = 4.dp,
-                        color = Color.Green.copy(alpha = (0.5f)),
-                        offset = DpOffset(x = 4.dp, 0.dp),
-                    )
-                )
-
         ) {
             Text(
                 modifier = Modifier
@@ -484,7 +485,7 @@ fun RealisticShadows() {
     }
 }
 
-@Preview(heightDp = 2000 )
+@Preview(heightDp = 2000)
 @Composable
 fun ShadowScreenPreview() {
     ComposePlaygroundTheme {
